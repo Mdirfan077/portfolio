@@ -388,7 +388,7 @@ footer {
         <img class="profile" src="Irfan.png" alt="Md Irfan — profile photo">
         <p style="margin:10px 0 0;font-weight:700">Md Irfan</p>
         <p class="small">Full Stack Developer | India</p>
-        <p class="small">Email: <a href="mdirfan92dd@gmail.com" style="color:var(--accent);text-decoration:none;">mdirfan92dd@gmail.com</a></p>
+        <p class="small">Email: <a href="mailto:mdirfan92dd@gmail.com" style="color:var(--accent);text-decoration:none;">mdirfan92dd@gmail.com</a></p>
         <p style="margin-top:10px"><a class="btn" href="#projects">View Projects</a></p>
       </div>
     </section>
@@ -579,7 +579,6 @@ footer {
 
 
 
-
     
     <section id="contact" class="card">
       <h2>Get in Touch</h2>
@@ -630,17 +629,41 @@ footer {
 
     scrollUp.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-    contactForm.addEventListener('submit', e => {
-      e.preventDefault();
-      const name = document.getElementById('name').value.trim() || 'there';
-      const now = new Date();
-      const time = now.toLocaleString();
-responseMsg.textContent = `✅ Thanks ${name}! Your message was received on ${time}. I'll reply soon.`;
-      contactForm.reset();
-      // gentle success highlight
-      responseMsg.style.color = 'var(--accent)';
-      setTimeout(() => responseMsg.style.color = '', 5000);
-    });
+//     contactForm.addEventListener('submit', e => {
+//       e.preventDefault();
+//       const name = document.getElementById('name').value.trim() || 'there';
+//       const now = new Date();
+//       const time = now.toLocaleString();
+// responseMsg.textContent = `✅ Thanks ${name}! Your message was received on ${time}. I'll reply soon.`;
+//       contactForm.reset();
+//       // gentle success highlight
+//       responseMsg.style.color = 'var(--accent)';
+//       setTimeout(() => responseMsg.style.color = '', 5000);
+//     });
+
+
+
+    contactForm.addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  const formData = new FormData(contactForm);
+  const name = document.getElementById('name').value || "there";
+
+  const response = await fetch(contactForm.action, {
+    method: "POST",
+    body: formData,
+    headers: {
+      'Accept': 'application/json'
+    }
+  });
+
+  if (response.ok) {
+    responseMsg.textContent = `✅ Thanks ${name}! Your message was received. I'll reply soon.`;
+    contactForm.reset();
+  } else {
+    responseMsg.textContent = "❌ Something went wrong. Please try again.";
+  }
+});
 
     themeToggle.addEventListener('click', () => {
       document.body.style.transition = "background 0.8s ease, color 0.5s ease";
@@ -688,4 +711,5 @@ responseMsg.textContent = `✅ Thanks ${name}! Your message was received on ${ti
 
   </script>
 </body>
+
 </html>
